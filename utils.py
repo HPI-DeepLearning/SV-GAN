@@ -39,38 +39,6 @@ def load(sequence, subsequence_length):
         y.append(np.stack([np.stack(local_y, axis=0)], axis=0))
         
     return x, y
-
-# load image sequences with labels
-def Seqload(sequence, subsequence_length, p_array):
-
-    images = [open_image(seq) for seq in sequence]
-    x = []
-    y = []
-    label1 = []
-    label2 = []
-
-    for i in range(len(sequence) - subsequence_length + 1):
-        local_x = [images[i+j][0] for j in range(subsequence_length)]
-        local_y = [images[i+j][1] for j in range(subsequence_length)]
-        x.append(np.stack([np.stack(local_x, axis=0)], axis=0))
-        y.append(np.stack([np.stack(local_y, axis=0)], axis=0))
-        idx_imgname=[:,1]
-        idx1 = [k for k in xrange(np.shape(p_array)[2]) if k in idx_imgname]
-        idx2=[k for k in xrange(np.shape(p_aray)[3])  if k in idx_imgname]
-        label1=p_array[:,idx1]
-        label2=p_array[:,idx2]
-
-    return x, y, label1, label2
-
-
-def load_labels(path):
-    with open("txtpath", "r") as patinetlabels:
-    p_array=[]
-    for line in patientlabels:
-        p_array.append(line)
-     return p_array
-
-
             
 def augment(sequence):
     return [apply_contrast(apply_gaussian_noise(resize(s))) for s in sequence]

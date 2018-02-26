@@ -1,8 +1,21 @@
-from keras.optimizers import Adam
+#from keras.optimizers import Adam
+import os
+import numpy as np
+#from model import *
+#from utils import *
+#from config import *
 
-from model import *
-from utils import *
-from config import *
+csv_file = os.path.abspath("data/label.txt")
+with open(csv_file) as f:
+    data_file = f.read().splitlines()
+data_set = [f.split(",") for f in data_file]
+#print(data_set)
+
+data = dict()
+for d in data_set:
+    data[d[0]] = np.array([float(d[1]), float(d[2])])
+print(data)
+quit()
 
 # Create optimizers
 opt_dcgan = Adam(lr=1E-3, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
@@ -13,9 +26,6 @@ gen.compile(loss='mae', optimizer=opt_discriminator)
 
 disc = Discriminator((sequence_length, size, size, input), (sequence_length, size, size, output), kernel_depth)
 disc.trainable = False
-
-svc = SVClassifier((sequence_length, size, size, input), (sequence_length, size, size, output), kernel_depth)
-svc.trainable= False
 
 combined = Combine(gen, disc, (sequence_length, size, size, input), (sequence_length, size, size, output))
 loss = ['categorical_crossentropy', 'binary_crossentropy']
@@ -57,7 +67,7 @@ for e in range(epochs):
             dr_loss = disc.train_on_batch([x[i], y[i]], real_y)
         
             # gen fake
-            fake = gen.predict(x[i])
+            fake = gen.predict(x[i], data[sequence])
         
             # train disc on fake
             df_loss = disc.train_on_batch([x[i], re_shape(fake)], fake_y)

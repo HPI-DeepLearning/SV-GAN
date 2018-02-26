@@ -56,7 +56,7 @@ def Generator(input_shape, output, kernel_depth, pixels, kernel_size=5):
 	#adding sv-input&output data
     x0 = lstm_merge_layer(up_conv_128, 8 * kernel_depth, kernel_size)
 	x1 = Flatten()(x0)
-	age = Input(shape=(1,)) #input_ages
+	age = Input(shape=(2,)) #input_ages
     added = concatenate([x1, age])
     out = keras.layers.Dense(64)(added)
     out = keras.layers.Dense(3)(out)
@@ -101,7 +101,7 @@ def Discriminator(input_shape, generator_shape, kernel_depth, kernel_size=5):
      
 def Combine(gen, disc, input_shape, new_sequence):
     input = Input(shape=input_shape)
-    generated_image, survival_rate = gen([input, numpy.ones((1,))])
+    generated_image, survival_rate = gen([input, numpy.ones((2,))])
 
     reshaped = Reshape(new_sequence)(generated_image)
     

@@ -28,7 +28,7 @@ if not os.path.exists(directory):
 input = 4
 output = 4
 size = 240
-epochs = 100
+epochs = 110
 sequence_length = 10
 kernel_depth = 24
 

@@ -55,12 +55,12 @@ def Generator(input_shape, output, kernel_depth, pixels, kernel_size=5):
 	
 	#adding sv-input&output data
     x0 = lstm_merge_layer(up_conv_128, 8 * kernel_depth, kernel_size)
-	x1 = Flatten()(x0)
-	age = Input(shape=(2,)) #input_ages
+    x1 = Flatten()(x0)
+    age = Input(shape=(2,)) #input_ages
     added = concatenate([x1, age])
     out = keras.layers.Dense(64)(added)
     out = keras.layers.Dense(3)(out)
-	survival_rate = Activation('softmax')(out)
+    survival_rate = Activation('softmax')(out)
 	
     final = TimeDistributed(Conv2D(output, 1))(up_conv_128)
     final = Reshape((pixels, output))(final)

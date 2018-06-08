@@ -6,7 +6,7 @@ K.set_image_data_format('channels_last')
 # general
 data_dir = 'data/*'
 test_dir = 'data/test/*'
-label_deir= 'data/label.txt'
+label_dir= 'data/label.txt'
 val_dir = 'data/val/*'
 checkpoint_dir = 'checkpoints/'
 validation_dir = 'data/validation/'
